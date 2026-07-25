@@ -2,12 +2,13 @@
 {
     public class TheLibrary
     {
-
         private readonly List<Book> _books = new()
-    {
+        {
         new Book("Hellsing", 666),
         new Book("Legends", 270)
-    };
+        };
+
+        public bool IsEmpty => _books.Count == 0;
 
         public static void Run()
         {
@@ -74,6 +75,11 @@
 
         private void DisplayAllBooks()
         {
+            if (!HasBookOrDisplayMessage())
+            {
+                return;
+            }
+
             foreach (Book book in _books)
             {
                 Console.WriteLine($"Book: {book.BookName}" +
@@ -84,8 +90,13 @@
             Console.WriteLine();
         }
 
-        private Book ChooseBook()
+        private Book? ChooseBook()
         {
+            if (!HasBookOrDisplayMessage())
+            {
+                return null;
+            }
+
             while (true)
             {
                 Console.Write("Book name: ");
@@ -147,8 +158,17 @@
 
         private void ChangeBookStatus()
         {
+            if (!HasBookOrDisplayMessage())
+            {
+                return;
+            }
+
             DisplayAllBooks();
-            Book selectedBook = ChooseBook();
+            Book? selectedBook = ChooseBook();
+            if (selectedBook == null)
+            {
+                return;
+            }
 
             while (true)
             {
@@ -230,6 +250,13 @@
 
         public void DisplayBorrowers()
         {
+            if (!_books.Any(book => book.BookStatus == Status.Unavailable))
+            {
+                Console.WriteLine("No book is being borrowed right now.");
+                Console.WriteLine();
+                return;
+            }
+
             foreach (Book book in _books)
             {
                 Console.WriteLine($"Book: {book.BookName}" +
@@ -250,10 +277,27 @@
         public void RemoveBook()
         {
             DisplayAllBooks();
+            if (!HasBookOrDisplayMessage())
+            {
+                return;
+            }
+
             Book selectedBook = ChooseBook();
             _books.Remove(selectedBook);
             Console.WriteLine($"{selectedBook.BookName} has been removed.");
             Console.WriteLine();
+        }
+
+        public bool HasBookOrDisplayMessage()
+        {
+            if (!IsEmpty)
+            {
+                return true;
+            }
+
+            Console.WriteLine("The library is empty.");
+            Console.WriteLine();
+            return false;
         }
     }
 }
