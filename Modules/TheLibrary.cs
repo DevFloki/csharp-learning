@@ -26,6 +26,7 @@
                 Console.WriteLine("3. Change a book's status");
                 Console.WriteLine("4. Lend book");
                 Console.WriteLine("5. List of borrowers");
+                Console.WriteLine("6. Remove a book");
                 Console.WriteLine("0. Exit program");
                 Console.Write("Your choice: ");
 
@@ -54,9 +55,18 @@
                         DisplayBorrowers();
                         break;
 
+                    case "6":
+                        RemoveBook();
+                        break;
+
                     case "0":
-                        Console.WriteLine("Exiting program");
+                        Console.WriteLine("Exiting program.");
                         isRunning = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid option.");
+                        Console.WriteLine();
                         break;
                 }
             }
@@ -96,24 +106,42 @@
 
         private void AddBook()
         {
+            string bookName;
 
-            Console.Write("Book name: ");
-            string? bookName = Console.ReadLine();
+            while (true)
+            {
+                Console.Write("Book name: ");
+                string? input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine("Name cannot be empty.");
+                }
+                else if (_books.Any(b => b.BookName == input))
+                {
+                    Console.WriteLine("That book is already in the library");
+                }
+                else
+                {
+                    bookName = input;
+                    break;
+                }
+            }
 
             while (true)
             {
                 Console.Write("Total pages: ");
-                if (int.TryParse(Console.ReadLine(), out int bookPages))
+                if (int.TryParse(Console.ReadLine(), out int bookPages)
+                    && bookPages > 0)
                 {
                     _books.Add(new Book(bookName, bookPages));
                     Console.WriteLine($"Book {bookName} has been added to the library.");
                     Console.WriteLine();
                     return;
                 }
-                else
-                {
-                    Console.WriteLine("Please entere a whole number.");
-                }
+
+                Console.WriteLine("Please entere a positive whole number.");
+
             }
         }
 
@@ -134,7 +162,7 @@
                     switch (newStatus)
                     {
                         case 1:
-                            selectedBook.BookStatus = Status.Available;
+                            ReturnBook(selectedBook);
                             Console.WriteLine();
                             return;
 
@@ -150,26 +178,49 @@
         }
         private void LendBook()
         {
+            if (!_books.Any(b => b.BookStatus == Status.Available))
+            {
+                Console.WriteLine("Sorry, no books are currently available.");
+                Console.WriteLine();
+                return;
+            }
+
+            DisplayAllBooks();
+            Book? selectedBook = null;
+
+            while (true)
+            {
+                selectedBook = ChooseBook();
+                if (selectedBook.BookStatus == Status.Unavailable)
+                {
+                    Console.WriteLine("That book is currently unavaiable.");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+
             string? borrowerName = null;
             while (borrowerName == null)
             {
                 Console.Write("Name of borrower: ");
-                string? temp = Console.ReadLine();
+                string? name = Console.ReadLine();
 
-                if (string.IsNullOrWhiteSpace(temp))
+                if (string.IsNullOrWhiteSpace(name))
                 {
                     Console.WriteLine("Invalid input. Enter a name.");
                     Console.WriteLine();
                 }
                 else
                 {
-                    borrowerName = temp;
+                    borrowerName = name;
                 }
             }
 
             Borrower newBorrower = new Borrower(borrowerName);
-            DisplayAllBooks();
-            Book selectedBook = ChooseBook();
+
             selectedBook.BookStatus = Status.Unavailable;
             selectedBook.CurrentBorrower = newBorrower;
 
@@ -187,6 +238,21 @@
                     $" - Borrower: {book.CurrentBorrower?.Name ?? "Ingen"}" +
                     $" - LibraryCardNumber: {book.CurrentBorrower?.LibraryCardNumber}");
             }
+            Console.WriteLine();
+        }
+
+        public void ReturnBook(Book selectedBook)
+        {
+            selectedBook.BookStatus = Status.Available;
+            selectedBook.CurrentBorrower = null;
+        }
+
+        public void RemoveBook()
+        {
+            DisplayAllBooks();
+            Book selectedBook = ChooseBook();
+            _books.Remove(selectedBook);
+            Console.WriteLine($"{selectedBook.BookName} has been removed.");
             Console.WriteLine();
         }
     }
