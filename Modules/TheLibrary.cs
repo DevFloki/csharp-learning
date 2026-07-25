@@ -102,12 +102,15 @@
                 Console.Write("Book name: ");
                 string? chosenBook = Console.ReadLine();
 
-                foreach (Book book in _books)
+                Book? selectedBook = _books.FirstOrDefault(book =>
+                string.Equals(
+                    book.BookName,
+                    chosenBook,
+                    StringComparison.OrdinalIgnoreCase));
+
+                if (selectedBook is not null)
                 {
-                    if (book.BookName == chosenBook)
-                    {
-                        return book;
-                    }
+                    return selectedBook;
                 }
 
                 Console.WriteLine($"Invalid selection. choose a valid name from list.");
