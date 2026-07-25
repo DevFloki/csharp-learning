@@ -38,6 +38,12 @@ while (isRunning)
             Console.WriteLine("Exiting program");
             isRunning = false;
             break;
+
+        default:
+            Console.WriteLine("Invalid input.");
+            Console.WriteLine();
+            break;
+
     }
 
 }

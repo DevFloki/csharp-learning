@@ -66,7 +66,7 @@
                         break;
 
                     default:
-                        Console.WriteLine("Invalid option.");
+                        Console.WriteLine("Invalid input.");
                         Console.WriteLine();
                         break;
                 }
@@ -80,9 +80,10 @@
                 return;
             }
 
-            foreach (Book book in _books)
+            foreach (Book book in _books.OrderBy(book => book.BookName))
             {
-                Console.WriteLine($"Book: {book.BookName}" +
+                Console.WriteLine(
+                    $"Book: {book.BookName}" +
                     $" - Pages: {book.BookPages}" +
                     $" - Status: {book.BookStatus}" +
                     $" - Borrower: {book.CurrentBorrower?.Name ?? "None"}");
@@ -131,7 +132,7 @@
                 {
                     Console.WriteLine("Name cannot be empty.");
                 }
-                else if (_books.Any(b => b.BookName == input))
+                else if (_books.Any(book => book.BookName == input))
                 {
                     Console.WriteLine("That book is already in the library");
                 }
@@ -208,7 +209,7 @@
         }
         private void LendBook()
         {
-            if (!_books.Any(b => b.BookStatus == Status.Available))
+            if (!_books.Any(book => book.BookStatus == Status.Available))
             {
                 Console.WriteLine("Sorry, no books are currently available.");
                 Console.WriteLine();
