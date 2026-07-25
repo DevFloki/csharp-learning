@@ -85,7 +85,7 @@
                 Console.WriteLine($"Book: {book.BookName}" +
                     $" - Pages: {book.BookPages}" +
                     $" - Status: {book.BookStatus}" +
-                    $" - Borrower: {book.CurrentBorrower?.Name ?? "Ingen"}");
+                    $" - Borrower: {book.CurrentBorrower?.Name ?? "None"}");
             }
             Console.WriteLine();
         }
@@ -187,6 +187,13 @@
                             return;
 
                         case 2:
+                            if (selectedBook.BookStatus == Status.Borrowed)
+                            {
+                                Console.WriteLine("Book is currently being borrowed right now.");
+                                Console.WriteLine();
+                                return;
+                            }
+
                             selectedBook.BookStatus = Status.Unavailable;
                             Console.WriteLine();
                             return;
@@ -211,9 +218,15 @@
             while (true)
             {
                 selectedBook = ChooseBook();
-                if (selectedBook.BookStatus == Status.Unavailable)
+                if (selectedBook.BookStatus == Status.Borrowed)
                 {
-                    Console.WriteLine("That book is currently unavaiable.");
+                    Console.WriteLine("That book is currently borrowed.");
+                    Console.WriteLine();
+                }
+                else if (selectedBook.BookStatus == Status.Unavailable)
+                {
+                    Console.WriteLine("That book is currently unavailable.");
+                    Console.WriteLine();
                 }
                 else
                 {
@@ -241,16 +254,16 @@
 
             Borrower newBorrower = new Borrower(borrowerName);
 
-            selectedBook.BookStatus = Status.Unavailable;
+            selectedBook.BookStatus = Status.Borrowed;
             selectedBook.CurrentBorrower = newBorrower;
 
-            Console.WriteLine($"Boken er nå lånt ut til {borrowerName}.");
+            Console.WriteLine($"Book is now borrowed to {borrowerName}.");
             Console.WriteLine();
         }
 
         public void DisplayBorrowers()
         {
-            if (!_books.Any(book => book.BookStatus == Status.Unavailable))
+            if (!_books.Any(book => book.BookStatus == Status.Borrowed))
             {
                 Console.WriteLine("No book is being borrowed right now.");
                 Console.WriteLine();
@@ -262,7 +275,7 @@
                 Console.WriteLine($"Book: {book.BookName}" +
                     $" - Pages: {book.BookPages}" +
                     $" - Status: {book.BookStatus}" +
-                    $" - Borrower: {book.CurrentBorrower?.Name ?? "Ingen"}" +
+                    $" - Borrower: {book.CurrentBorrower?.Name ?? "None"}" +
                     $" - LibraryCardNumber: {book.CurrentBorrower?.LibraryCardNumber}");
             }
             Console.WriteLine();
@@ -305,7 +318,8 @@
 public enum Status
 {
     Available,
-    Unavailable
+    Unavailable,
+    Borrowed
 }
 
 public class Book
