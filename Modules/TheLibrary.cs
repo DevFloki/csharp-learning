@@ -270,13 +270,16 @@
                 return;
             }
 
-            foreach (Book book in _books)
+            List<Book> borrowedBooks = _books
+                .Where(book => book.CurrentBorrower is not null)
+                .ToList();
+
+            foreach (Book book in borrowedBooks)
             {
                 Console.WriteLine($"Book: {book.BookName}" +
                     $" - Pages: {book.BookPages}" +
-                    $" - Status: {book.BookStatus}" +
-                    $" - Borrower: {book.CurrentBorrower?.Name ?? "None"}" +
-                    $" - LibraryCardNumber: {book.CurrentBorrower?.LibraryCardNumber}");
+                    $" - Borrower: {book.CurrentBorrower.Name}" +
+                    $" - LibraryCardNumber: {book.CurrentBorrower.LibraryCardNumber}");
             }
             Console.WriteLine();
         }
