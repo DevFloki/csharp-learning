@@ -28,6 +28,7 @@
                 Console.WriteLine("4. Lend book");
                 Console.WriteLine("5. List of borrowers");
                 Console.WriteLine("6. Remove a book");
+                Console.WriteLine("7. Remove a book");
                 Console.WriteLine("0. Exit program");
                 Console.Write("Your choice: ");
 
@@ -58,6 +59,10 @@
 
                     case "6":
                         RemoveBook();
+                        break;
+
+                    case "7":
+                        DisplayStatistics();
                         break;
 
                     case "0":
@@ -321,6 +326,31 @@
             Console.WriteLine("The library is empty.");
             Console.WriteLine();
             return false;
+        }
+
+        public void DisplayStatistics()
+        {
+            int totalBooks = _books.Count;
+
+            int availableBooks = _books.Count(
+                book => book.BookStatus == Status.Available);
+
+            int borrowedBooks = _books.Count(
+                book => book.BookStatus == Status.Borrowed);
+
+            int unavailableBooks = _books.Count(
+                book => book.BookStatus == Status.Unavailable);
+
+            double averagePages = _books.Count > 0
+                ? _books.Average(book => book.BookPages)
+                : 0;
+
+            Console.WriteLine($"Total books: {totalBooks}");
+            Console.WriteLine($"Available: {availableBooks}");
+            Console.WriteLine($"Borrowed: {borrowedBooks}");
+            Console.WriteLine($"Unavailable: {unavailableBooks}");
+            Console.WriteLine($"Average pages: {averagePages:F1}");
+            Console.WriteLine();
         }
     }
 }
