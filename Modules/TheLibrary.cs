@@ -28,7 +28,7 @@
                 Console.WriteLine("4. Lend book");
                 Console.WriteLine("5. List of borrowers");
                 Console.WriteLine("6. Remove a book");
-                Console.WriteLine("7. Remove a book");
+                Console.WriteLine("7. Display statistics");
                 Console.WriteLine("0. Exit program");
                 Console.Write("Your choice: ");
 
