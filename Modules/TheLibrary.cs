@@ -218,12 +218,12 @@
             while (true)
             {
                 selectedBook = ChooseBook();
-                if (selectedBook.BookStatus == Status.Borrowed)
+                if (selectedBook?.BookStatus == Status.Borrowed)
                 {
                     Console.WriteLine("That book is currently borrowed.");
                     Console.WriteLine();
                 }
-                else if (selectedBook.BookStatus == Status.Unavailable)
+                else if (selectedBook?.BookStatus == Status.Unavailable)
                 {
                     Console.WriteLine("That book is currently unavailable.");
                     Console.WriteLine();
@@ -254,8 +254,8 @@
 
             Borrower newBorrower = new Borrower(borrowerName);
 
-            selectedBook.BookStatus = Status.Borrowed;
-            selectedBook.CurrentBorrower = newBorrower;
+            selectedBook?.BookStatus = Status.Borrowed;
+            selectedBook?.CurrentBorrower = newBorrower;
 
             Console.WriteLine($"Book is now borrowed to {borrowerName}.");
             Console.WriteLine();
@@ -278,8 +278,8 @@
             {
                 Console.WriteLine($"Book: {book.BookName}" +
                     $" - Pages: {book.BookPages}" +
-                    $" - Borrower: {book.CurrentBorrower.Name}" +
-                    $" - LibraryCardNumber: {book.CurrentBorrower.LibraryCardNumber}");
+                    $" - Borrower: {book.CurrentBorrower?.Name}" +
+                    $" - LibraryCardNumber: {book.CurrentBorrower?.LibraryCardNumber}");
             }
             Console.WriteLine();
         }
@@ -298,10 +298,13 @@
                 return;
             }
 
-            Book selectedBook = ChooseBook();
-            _books.Remove(selectedBook);
-            Console.WriteLine($"{selectedBook.BookName} has been removed.");
-            Console.WriteLine();
+            Book? selectedBook = ChooseBook();
+            if (selectedBook != null)
+            {
+                _books.Remove(selectedBook);
+                Console.WriteLine($"{selectedBook.BookName} has been removed.");
+                Console.WriteLine();
+            }
         }
 
         public bool HasBookOrDisplayMessage()
