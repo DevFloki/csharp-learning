@@ -327,12 +327,12 @@ public enum Status
 
 public class Book
 {
-    public string? BookName { get; private set; }
+    public string BookName { get; private set; }
     public int BookPages { get; private set; }
     public Status BookStatus { get; set; } = Status.Available;
     public Borrower? CurrentBorrower { get; set; } = null;
 
-    public Book(string? bookName, int bookPages)
+    public Book(string bookName, int bookPages)
     {
         BookName = bookName;
         BookPages = bookPages;
