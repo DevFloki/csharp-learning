@@ -8,7 +8,7 @@ while (isRunning)
     Console.WriteLine("1. Temperature Converter");
     Console.WriteLine("2. To-Do List");
     Console.WriteLine("3. The Library");
-    Console.WriteLine("4. TopSercetProject");
+    Console.WriteLine("4. Smart Kitchen");
     Console.WriteLine("0. Exit program");
     Console.Write("Your choice: ");
 
@@ -30,12 +30,11 @@ while (isRunning)
             break;
 
         case "4":
-            Console.WriteLine("Under development...");
-            Console.WriteLine();
+            SmartKitchen.Run();
             break;
 
         case "0":
-            Console.WriteLine("Exiting program");
+            Console.WriteLine("Exiting program.");
             isRunning = false;
             break;
 
