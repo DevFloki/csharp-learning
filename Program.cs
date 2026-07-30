@@ -30,7 +30,7 @@ while (isRunning)
             break;
 
         case "4":
-            SmartKitchen.Run();
+            await SmartKitchen.RunAsync();
             break;
 
         case "0":
