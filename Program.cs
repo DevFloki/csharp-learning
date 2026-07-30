@@ -9,6 +9,7 @@ while (isRunning)
     Console.WriteLine("2. To-Do List");
     Console.WriteLine("3. The Library");
     Console.WriteLine("4. Smart Kitchen");
+    Console.WriteLine("5. Text Editor");
     Console.WriteLine("0. Exit program");
     Console.Write("Your choice: ");
 
@@ -31,6 +32,10 @@ while (isRunning)
 
         case "4":
             await SmartKitchen.RunAsync();
+            break;
+
+        case "5":
+            TextEditor.Run();
             break;
 
         case "0":
