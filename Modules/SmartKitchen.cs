@@ -8,7 +8,7 @@
             Task prepearTea = PrepearingTeaAsync();
             await Task.WhenAll(boilWater, prepearTea);
 
-            string boilingWater = boilWater.Result;
+            string boilingWater = await boilWater;
             Console.WriteLine(boilingWater);
             Console.WriteLine();
 
