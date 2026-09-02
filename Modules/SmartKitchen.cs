@@ -27,6 +27,7 @@
         public static async Task PrepearingTeaAsync()
         {
             Console.WriteLine("Getting cup");
+            await Task.Delay(1000);
             Console.WriteLine("Geting t-bag");
         }
 
